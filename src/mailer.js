@@ -10,7 +10,7 @@ const transport = nodemailer.createTransport(
 const pause = (ms) => new Promise((res) => setTimeout(() => res(), ms))
 
 const sendEmails = async (emails, dryrun) => {
-  logger.info(`Starting to send mail to ${email.length} recipient(s)`)
+  logger.info(`Starting to send mail to ${emails.length} recipient(s)`)
   for (const email of emails) {
     if (dryrun) {
       logger.info(`Dry run enabled, would have sent mail to ${email.to}`, { to: email.to, subject: email.subject, text: email.text })
@@ -25,7 +25,7 @@ const sendEmails = async (emails, dryrun) => {
     }
     await pause(500)
   }
-  logger.info(`Sent mail to ${email.length} recipient(s)`)
+  logger.info(`Sent mail to ${emails.length} recipient(s)`)
 }
 
 module.exports = sendEmails
