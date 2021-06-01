@@ -7,6 +7,8 @@ const requiredFields = ['to', 'subject', 'text']
 
 app.use(express.json())
 
+app.get('*', express.static('./public/'))
+
 app.use((req, res, next) => {
   if (!TOKEN) return next()
 

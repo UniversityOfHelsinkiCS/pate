@@ -19,7 +19,7 @@ const parseSettings = (settings) => ({
   toskaAsBcc: settings.hideToska && !settings.disableToska,
   toskaAsCc: !settings.hideToska && !settings.disableToska,
   color: settings.color || 'lightsteelblue',
-  application: settings.header || '',
+  header: settings.header || '',
   dryrun: settings.dryrun || false
 });
 
