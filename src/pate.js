@@ -4,27 +4,25 @@ require.extensions[".mustache"] = function (module, filename) {
   module.exports = fs.readFileSync(filename, "utf8");
 };
 const Mustache = require("mustache");
-
 const mailTemplate = require("../assets/mail.mustache");
-const sendEmails = require("./mailer");
 
 const toskaMail = "grp-toska@helsinki.fi";
 
 const createMailHTML = (text, color, header) => {
-  const content = text.replace(/\n/g, '<br>')
+  const content = text.replace(/\n/g, "<br>");
   return Mustache.render(mailTemplate, { content, color, header });
-}
+};
 
 const parseSettings = (settings) => ({
   toskaAsBcc: settings.hideToska && !settings.disableToska,
   toskaAsCc: !settings.hideToska && !settings.disableToska,
-  color: settings.color || 'lightsteelblue',
-  header: settings.header || '',
-  dryrun: settings.dryrun || false
+  color: settings.color || "lightsteelblue",
+  header: settings.header || "",
+  dryrun: settings.dryrun || false,
 });
 
-const youHaveNewMail = (emails, template, settings) => {
-  const { toskaAsCc, toskaAsBcc, color, header, dryrun } =
+const prepareMailsWithTemplate = (emails, template, settings) => {
+  const { toskaAsCc, toskaAsBcc, color, header } =
     parseSettings(settings);
 
   const addCc = (array = []) => (toskaAsCc ? [...array, toskaMail] : array);
@@ -39,13 +37,13 @@ const youHaveNewMail = (emails, template, settings) => {
       return {
         html: createMailHTML(email.text, color, header),
         ...email,
-        from: `${email.from || 'University of Helsinki'} <noreply@helsinki.fi>`,
+        from: `${email.from || "University of Helsinki"} <noreply@helsinki.fi>`,
         cc: addCc(email.cc),
         bcc: addBcc(email.bcc),
       };
     });
 
-  sendEmails(acualEmails, dryrun);
+    return acualEmails
 };
 
-module.exports = youHaveNewMail;
+module.exports = { prepareMailsWithTemplate, parseSettings };
