@@ -37,6 +37,7 @@ const youHaveNewMail = (emails, template, settings) => {
       return {
         html: createMailHTML(email.text, color, header),
         ...email,
+        from: `${email.from || 'University of Helsinki'} <noreply@helsinki.fi>`,
         cc: addCc(email.cc),
         bcc: addBcc(email.bcc),
       };

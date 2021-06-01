@@ -4,10 +4,7 @@ const TOKEN = process.env.TOKEN
 
 const PORT = process.env.PORT || 8000
 
-const TRANSPORT_DEFAULTS = {
-  from: 'University of Helsinki <noreply@helsinki.fi>',
-  bcc: 'grp-toska@cs.helsinki.fi'
-}
+const TRANSPORT_DEFAULTS = {}
 
 const TRANSPORT_SETTINGS = {
   host: 'smtp.helsinki.fi',
