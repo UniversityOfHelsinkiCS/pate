@@ -10,8 +10,10 @@ const sendEmails = require("./mailer");
 
 const toskaMail = "grp-toska@helsinki.fi";
 
-const createMailHTML = (content, color, header) =>
-  Mustache.render(mailTemplate, { content, color, header });
+const createMailHTML = (text, color, header) => {
+  const content = text.replace(/\n/g, '<br>')
+  return Mustache.render(mailTemplate, { content, color, header });
+}
 
 const parseSettings = (settings) => ({
   toskaAsBcc: settings.hideToska && !settings.disableToska,
