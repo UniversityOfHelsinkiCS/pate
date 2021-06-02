@@ -1,6 +1,6 @@
 # Pate
 
-The email service. Running in pate.toska.cs.helsinki.fi, POST the payload there.
+The email service. Running in pate.toska.cs.helsinki.fi, POST the payload there. Include token as either query parameter or in headers.
 
 The generated email format is the following: 
 
