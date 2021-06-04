@@ -1,14 +1,13 @@
 const fs = require("fs");
-
-require.extensions[".mustache"] = function (module, filename) {
-  module.exports = fs.readFileSync(filename, "utf8");
-};
+const path = require("path");
 const Mustache = require("mustache");
-const mailTemplate = require("../assets/mail.mustache");
-
 const toskaMail = "grp-toska@helsinki.fi";
 
 const createMailHTML = (text, color, header) => {
+  const mailTemplate = fs.readFileSync(
+    path.join(__dirname, "..", "assets", "mail.mustache"),
+    "utf8"
+  );
   const content = text.replace(/\n/g, "<br>");
   return Mustache.render(mailTemplate, { content, color, header });
 };
@@ -22,8 +21,7 @@ const parseSettings = (settings) => ({
 });
 
 const prepareMailsWithTemplate = (emails, template, settings) => {
-  const { toskaAsCc, toskaAsBcc, color, header } =
-    parseSettings(settings);
+  const { toskaAsCc, toskaAsBcc, color, header } = parseSettings(settings);
 
   const addCc = (array = []) => (toskaAsCc ? [...array, toskaMail] : array);
   const addBcc = (array = []) => (toskaAsBcc ? [...array, toskaMail] : array);
@@ -43,7 +41,7 @@ const prepareMailsWithTemplate = (emails, template, settings) => {
       };
     });
 
-    return acualEmails
+  return acualEmails;
 };
 
 module.exports = { prepareMailsWithTemplate, parseSettings };

@@ -11,6 +11,16 @@ app.get('*', express.static('./public/'))
 
 app.use(tokenMiddleware)
 
+app.post('/preview', validationMiddleware, (req, res) => {
+  const { emails, template, settings } = req.body
+
+  const acualEmails = prepareMailsWithTemplate(emails, template, settings)
+
+  const exampleMail = acualEmails[0]
+
+  res.send({ html: exampleMail.html })
+})
+
 app.post('*', validationMiddleware, (req, res) => {
   const { emails, template, settings } = req.body
 

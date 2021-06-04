@@ -21,6 +21,7 @@ const validationMiddleware = (req, res, next) => {
 
   const { emails, template } = req.body
   if (!Array.isArray(emails)) return res.status(400).send('body.emails must be an array')
+  if (!emails.length) return res.status(400).send('body.emails must have something in it')
   if (!template || typeof template !== 'object') return res.status(400).send('body.template must be an object')
 
   let missingFields = REQUIRED_FIELDS
