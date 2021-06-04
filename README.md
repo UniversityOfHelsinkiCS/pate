@@ -2,6 +2,8 @@
 
 The email service. Running in pate.toska.cs.helsinki.fi, POST the payload there. Include token as either query parameter or in headers.
 
+You can use the POST `/preview` to receive a preview before sending any emails. Use the same payload. The endpoint will return the html version of the email for the **first** email in the array of emails.
+
 The generated email format is the following: 
 
 ![Example image](https://raw.githubusercontent.com/UniversityOfHelsinkiCS/pate/main/assets/example_screenshot.png)
