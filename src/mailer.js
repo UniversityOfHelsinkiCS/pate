@@ -35,7 +35,7 @@ const sendEmails = async (emails, dryrun) => {
         text: email.text,
       });
     }
-    await pause(500);
+    await pause(200);
   }
   logger.info(`Sent mail to ${emails.length} recipient(s)`);
 };
