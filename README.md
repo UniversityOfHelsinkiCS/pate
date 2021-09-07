@@ -25,6 +25,7 @@ This email is generated from the following:
     "disableToska": true, // Do not set grp-toska as bcc or cc
     "color": "pink",, // Color of the header, test for yourself.
     "header": "Sent by Pate", // The header text in the header, usually the name of the application
+    "headerFontColor": "white", // Set the color of the text in header, by default it is black
     "dryrun": true // Tells pate to accept this payload, log it but not actually send the mail
   }
 }
