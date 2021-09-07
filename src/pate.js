@@ -3,13 +3,13 @@ const path = require("path");
 const Mustache = require("mustache");
 const toskaMail = "grp-toska@helsinki.fi";
 
-const createMailHTML = (text, color, header) => {
+const createMailHTML = (text, color, header, headerFontColor) => {
   const mailTemplate = fs.readFileSync(
     path.join(__dirname, "..", "assets", "mail.mustache"),
     "utf8"
   );
   const content = text.replace(/\n/g, "<br>");
-  return Mustache.render(mailTemplate, { content, color, header });
+  return Mustache.render(mailTemplate, { content, color, header, headerFontColor });
 };
 
 const parseSettings = (settings) => ({
@@ -17,11 +17,12 @@ const parseSettings = (settings) => ({
   toskaAsCc: !settings.hideToska && !settings.disableToska,
   color: settings.color || "lightsteelblue",
   header: settings.header || "",
+  headerFontColor: settings.headerFontColor || "black",
   dryrun: settings.dryrun || false,
 });
 
 const prepareMailsWithTemplate = (emails, template, settings) => {
-  const { toskaAsCc, toskaAsBcc, color, header } = parseSettings(settings);
+  const { toskaAsCc, toskaAsBcc, color, header, headerFontColor } = parseSettings(settings);
 
   const addCc = (array = []) => (toskaAsCc ? [...array, toskaMail] : array);
   const addBcc = (array = []) => (toskaAsBcc ? [...array, toskaMail] : array);
@@ -33,7 +34,7 @@ const prepareMailsWithTemplate = (emails, template, settings) => {
     }))
     .map((email) => {
       return {
-        html: createMailHTML(email.text, color, header),
+        html: createMailHTML(email.text, color, header, headerFontColor),
         ...email,
         from: `${email.from || "University of Helsinki"} <noreply@helsinki.fi>`,
         cc: addCc(email.cc),
