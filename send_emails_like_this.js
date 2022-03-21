@@ -19,9 +19,12 @@ const sendEmails = async (preview = false) => {
     },
     emails: emails,
     settings: {
-      hideToska: false,
+      hideToska: true,
       disableToska: true,
       header: "App name",
+      color: "lightsteelblue",
+      headerFontColor: "black",
+      demoHeader: false,
     },
   };
 
