@@ -5,7 +5,8 @@ const { prepareMailsWithTemplate, parseSettings } = require('./src/pate')
 const { sendEmails } = require('./src/mailer')
 const app = express()
 
-app.use(express.json())
+// https://stackoverflow.com/questions/19917401/error-request-entity-too-large
+app.use(express.json({ limit: '50mb' }))
 
 app.get('*', express.static('./public/'))
 
