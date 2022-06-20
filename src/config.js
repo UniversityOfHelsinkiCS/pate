@@ -1,7 +1,5 @@
 const inProduction = process.env.NODE_ENV === 'production'
 
-const TOKEN = process.env.TOKEN
-
 const PORT = process.env.PORT || 8000
 
 const TRANSPORT_DEFAULTS = {}
@@ -17,5 +15,4 @@ module.exports = {
   PORT,
   TRANSPORT_DEFAULTS,
   TRANSPORT_SETTINGS,
-  TOKEN
 }

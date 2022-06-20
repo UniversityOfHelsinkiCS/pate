@@ -1,20 +1,3 @@
-const logger = require("./logger");
-const { TOKEN } = require("./config");
-
-const tokenMiddleware = (req, res, next) => {
-  if (!TOKEN) return next();
-
-  if (req.query.token !== TOKEN && req.headers["token"] !== TOKEN) {
-    logger.error({
-      message: `No token ${req.query.token}, ${req.headers["token"]}`,
-    });
-
-    return res.sendStatus(401);
-  }
-
-  next();
-};
-
 /**
  * Ensures all fields are filled. The "template" is used as the basis for all emails and the email details then would overwrite the fields in template.
  * Validation checks that whatever is not in template is defined in emails
@@ -50,6 +33,5 @@ const validationMiddleware = (req, res, next) => {
 };
 
 module.exports = {
-  tokenMiddleware,
   validationMiddleware,
 };
