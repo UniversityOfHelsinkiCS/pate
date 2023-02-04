@@ -1,10 +1,10 @@
-FROM node:16-alpine
+FROM registry.access.redhat.com/ubi8/nodejs-16
 
-WORKDIR /usr/src/app
+WORKDIR /opt/app-root/src
 
 COPY package* ./
 
-RUN npm ci
+RUN npm ci -f
 
 COPY . .
 
