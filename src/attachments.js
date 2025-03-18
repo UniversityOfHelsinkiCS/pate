@@ -1,5 +1,4 @@
 import multer from 'multer'
-import path from 'path'
 
 // Configure multer for file uploads
 const upload = multer({
@@ -7,4 +6,18 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
 })
 
-module.exports = upload
+const createAttachment = (fileName) => {
+  if (!fileName) {
+    return null
+  }
+
+  return {
+    filename: fileName,
+    url: `/tmp/uploads/${fileName}`,
+  }
+}
+
+module.exports = {
+  upload,
+  createAttachment,
+}

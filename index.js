@@ -1,5 +1,5 @@
 const express = require('express')
-const upload = require('./src/attachments')
+const { upload } = require('./src/attachments')
 const { validationMiddleware } = require('./src/middlewares')
 const { PORT } = require('./src/config')
 const { prepareMailsWithTemplate, parseSettings } = require('./src/pate')

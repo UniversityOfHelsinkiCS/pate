@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Mustache = require("mustache");
 const toskaMail = "grp-toska@helsinki.fi";
+const { createAttachment } = require("./attachments");
 
 const createMailHTML = (
   text,
@@ -51,6 +52,11 @@ const prepareMailsWithTemplate = (emails, template, settings) => {
       ...emailOverwrite,
     }))
     .map((email) => {
+      const attachments = (email.attachmentFileId 
+        ? [createAttachment(email.attachmentFileId)] 
+        : []
+      ).filter(Boolean);
+
       return {
         html: createMailHTML(
           email.text,
@@ -63,6 +69,7 @@ const prepareMailsWithTemplate = (emails, template, settings) => {
         from: `${email.from || "University of Helsinki"} <noreply@helsinki.fi>`,
         cc: addCc(email.cc),
         bcc: addBcc(email.bcc),
+        attachments,
       };
     });
 
