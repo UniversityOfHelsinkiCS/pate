@@ -45,7 +45,7 @@ const createAttachment = (fileName) => {
 
   return {
     filename: fileName,
-    url: `/tmp/uploads/${fileName}`,
+    content: fs.createReadStream(`/tmp/uploads/${fileName}`)
   };
 };
 
