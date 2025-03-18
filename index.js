@@ -24,17 +24,6 @@ app.post('/preview', validationMiddleware, (req, res) => {
   res.send({ html: exampleMail.html })
 })
 
-app.post('*', validationMiddleware, (req, res) => {
-  const { emails, template, settings } = req.body
-
-  const acualEmails = prepareMailsWithTemplate(emails, template, settings)
-  const { dryrun } = parseSettings(settings)
-
-  sendEmails(acualEmails, dryrun);
-
-  res.send('Payload accepted, check logs to see progress')
-})
-
 app.post('/upload', (req, res, next) => {
   upload.single('file')(req, res, (err) => {
     if (err) {
@@ -51,6 +40,17 @@ app.post('/upload', (req, res, next) => {
     res.json({ fileId });
   });
 }, handleUploadErrors);
+
+app.post('*', validationMiddleware, (req, res) => {
+  const { emails, template, settings } = req.body
+
+  const acualEmails = prepareMailsWithTemplate(emails, template, settings)
+  const { dryrun } = parseSettings(settings)
+
+  sendEmails(acualEmails, dryrun);
+
+  res.send('Payload accepted, check logs to see progress')
+})
 
 app.listen(PORT, () => {
   console.log(`Pate listening at http://localhost:${PORT}`)
