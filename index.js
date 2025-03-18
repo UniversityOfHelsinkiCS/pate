@@ -5,6 +5,7 @@ const { validationMiddleware, handleUploadErrors } = require('./src/middlewares'
 const { PORT } = require('./src/config')
 const { prepareMailsWithTemplate, parseSettings } = require('./src/pate')
 const { sendEmails } = require('./src/mailer')
+const logger = require('./src/logger')
 const app = express()
 
 // https://stackoverflow.com/questions/19917401/error-request-entity-too-large
@@ -37,6 +38,8 @@ app.post('/upload', (req, res, next) => {
 
     // Respond with the file ID (e.g., filename or path)
     const fileId = file.filename;
+    logger.info(`Uploaded file: ${fileId}`);
+
     res.json({ fileId });
   });
 }, handleUploadErrors);
