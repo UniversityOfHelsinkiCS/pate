@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 const { upload } = require('./src/attachments')
 const { validationMiddleware } = require('./src/middlewares')
 const { PORT } = require('./src/config')
@@ -10,6 +11,8 @@ const app = express()
 app.use(express.json({ limit: '50mb' }))
 
 app.get('*', express.static('./public/'))
+
+app.use(morgan('tiny'))
 
 app.post('/preview', validationMiddleware, (req, res) => {
   const { emails, template, settings } = req.body
