@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const { upload } = require('./src/attachments')
-const { validationMiddleware } = require('./src/middlewares')
+const { validationMiddleware, handleUploadErrors } = require('./src/middlewares')
 const { PORT } = require('./src/config')
 const { prepareMailsWithTemplate, parseSettings } = require('./src/pate')
 const { sendEmails } = require('./src/mailer')
@@ -35,17 +35,22 @@ app.post('*', validationMiddleware, (req, res) => {
   res.send('Payload accepted, check logs to see progress')
 })
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  const file = req.file
+app.post('/upload', (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      return next(err);
+    }
+    
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
 
-  if (!file) {
-    return res.status(400).json({ error: 'No file uploaded' })
-  }
-
-  // Respond with the file ID (e.g., filename or path)
-  const fileId = file.filename
-  res.json({ fileId })
-})
+    // Respond with the file ID (e.g., filename or path)
+    const fileId = file.filename;
+    res.json({ fileId });
+  });
+}, handleUploadErrors);
 
 app.listen(PORT, () => {
   console.log(`Pate listening at http://localhost:${PORT}`)
