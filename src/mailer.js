@@ -17,7 +17,7 @@ const sendEmails = async (emails, dryrun) => {
         to: email.to,
         subject: email.subject,
         text: email.text,
-        attachments: email.attachments,
+        attachments: email.attachments.map(a => a.filename),
       });
       continue;
     }
@@ -28,14 +28,14 @@ const sendEmails = async (emails, dryrun) => {
         to: email.to,
         subject: email.subject,
         text: email.text,
-        attachments: email.attachments,
+        attachments: email.attachments.map(a => a.filename),
       });
     } catch (err) {
       logger.error(`Failed to send mail to ${email.to}`, {
         to: email.to,
         subject: email.subject,
         text: email.text,
-        attachments: email.attachments,
+        attachments: email.attachments.map(a => a.filename),
       });
     }
     await pause(200);
