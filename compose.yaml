@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+    command: npm run dev
+    environment:
+      NODE_ENV: development
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/app-root/src
+      - app_node_modules:/opt/app-root/src/node_modules
+      - app_uploads:/tmp/uploads
+
+volumes:
+  app_node_modules:
+  app_uploads:
