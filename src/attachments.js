@@ -1,6 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const logger = require('./logger');
+
+const SAFE_FILENAME = /^[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)*$/;
 
 // Ensure uploads directory exists
 const uploadDir = '/tmp/uploads';
@@ -14,7 +17,6 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function(req, file, cb) {
-    // Create a unique filename with original extension
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
     const name = path.basename(file.originalname, ext);
@@ -22,9 +24,12 @@ const storage = multer.diskStorage({
   }
 });
 
-// Configure file filter
 const fileFilter = (req, file, cb) => {
-  // You can implement file type validation here
+  if (!SAFE_FILENAME.test(file.originalname)) {
+    const err = new Error('File name contains disallowed characters');
+    err.code = 'INVALID_FILENAME';
+    return cb(err);
+  }
   cb(null, true);
 };
 
@@ -43,6 +48,11 @@ const createAttachment = (fileName) => {
     return null;
   }
 
+  if (!SAFE_FILENAME.test(fileName)) {
+    logger.warn(`Rejected unsafe attachment fileName: ${fileName}`);
+    return null;
+  }
+
   return {
     filename: fileName,
     content: fs.createReadStream(`/tmp/uploads/${fileName}`)
@@ -52,4 +62,5 @@ const createAttachment = (fileName) => {
 module.exports = {
   upload,
   createAttachment,
+  SAFE_FILENAME,
 };

@@ -1,3 +1,5 @@
+const { SAFE_FILENAME } = require("./attachments");
+
 /**
  * Ensures all fields are filled. The "template" is used as the basis for all emails and the email details then would overwrite the fields in template.
  * Validation checks that whatever is not in template is defined in emails
@@ -29,12 +31,23 @@ const validationMiddleware = (req, res, next) => {
   if (isMissingFields)
     return res.status(400).send("does not contain all data to send mail");
 
+  const hasBadAttachment = emails.some(
+    (email) =>
+      email.attachmentFileId !== undefined &&
+      !SAFE_FILENAME.test(email.attachmentFileId)
+  );
+  if (hasBadAttachment)
+    return res.status(400).send("attachmentFileId is not a valid filename");
+
   next();
 };
 
 // Custom error handler for multer upload errors
 const handleUploadErrors = (err, req, res, next) => {
   if (err) {
+    if (err.code === 'INVALID_FILENAME') {
+      return res.status(400).json({ error: err.message });
+    }
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(413).json({ error: 'File is too large' });
     }
