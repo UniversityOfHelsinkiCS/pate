@@ -56,5 +56,5 @@ app.post('*', validationMiddleware, (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Pate listening at http://localhost:${PORT}`)
+  logger.info(`Pate started at ${new Date().toISOString()}`)
 })

@@ -17,7 +17,6 @@ const sendEmails = async (emails, dryrun) => {
       logger.info(`Dry run enabled, would have sent mail to ${email.to}`, {
         to: email.to,
         subject: email.subject,
-        text: email.text,
         attachments: email.attachments.map(a => a.filename),
       });
       continue;
@@ -28,7 +27,6 @@ const sendEmails = async (emails, dryrun) => {
       logger.info(`Sent mail to ${email.to}`, {
         to: email.to,
         subject: email.subject,
-        text: email.text,
         attachments: email.attachments.map(a => a.filename),
       });
       email.attachments.forEach(a => removeAttachment(a.filename));
@@ -36,7 +34,6 @@ const sendEmails = async (emails, dryrun) => {
       logger.error(`Failed to send mail to ${email.to}`, {
         to: email.to,
         subject: email.subject,
-        text: email.text,
         attachments: email.attachments.map(a => a.filename),
       });
     }
