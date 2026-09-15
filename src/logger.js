@@ -1,8 +1,5 @@
-const os = require('os')
-
 const winston = require('winston')
 const LokiTransport = require('winston-loki')
-const { WinstonGelfTransporter } = require('winston-gelf-transporter')
 
 const { inProduction } = require('./config')
 
@@ -53,20 +50,6 @@ if (inProduction) {
     new LokiTransport({
       host: LOKI_HOST,
       labels: { app: 'pate', environment: process.env.NODE_ENV || 'production' }
-    })
-  )
-
-  transports.push(
-    new WinstonGelfTransporter({
-      handleExceptions: true,
-      host: 'toska.cs.helsinki.fi',
-      port: 9503,
-      protocol: 'udp',
-      hostName: os.hostname(),
-      additional: {
-        app: 'pate',
-        environment: 'production'
-      }
     })
   )
 }
