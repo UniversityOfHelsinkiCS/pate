@@ -59,8 +59,21 @@ const createAttachment = (fileName) => {
   };
 };
 
+const removeAttachment = (fileName) => {
+  if (!fileName || !SAFE_FILENAME.test(fileName)) {
+    return;
+  }
+
+  fs.unlink(path.join(uploadDir, fileName), (err) => {
+    if (err && err.code !== 'ENOENT') {
+      logger.warn(`Failed to remove attachment ${fileName}: ${err.message}`);
+    }
+  });
+};
+
 module.exports = {
   upload,
   createAttachment,
+  removeAttachment,
   SAFE_FILENAME,
 };

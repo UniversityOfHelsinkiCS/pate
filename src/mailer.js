@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const logger = require("./logger");
 const { TRANSPORT_DEFAULTS, TRANSPORT_SETTINGS } = require("./config");
+const { removeAttachment } = require("./attachments");
 
 const transport = nodemailer.createTransport(
   TRANSPORT_SETTINGS,
@@ -30,6 +31,7 @@ const sendEmails = async (emails, dryrun) => {
         text: email.text,
         attachments: email.attachments.map(a => a.filename),
       });
+      email.attachments.forEach(a => removeAttachment(a.filename));
     } catch (err) {
       logger.error(`Failed to send mail to ${email.to}`, {
         to: email.to,
